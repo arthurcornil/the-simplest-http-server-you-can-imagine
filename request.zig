@@ -3,7 +3,7 @@ const Connection = std.net.Server.Connection;
 
 const Map = std.static_string_map.StaticStringMap;
 
-const Method = enum {
+pub const Method = enum {
     GET,
     pub fn init(str: []const u8) !Method {
         return MethodMap.get(str).?;
@@ -36,8 +36,8 @@ pub fn parse_request(request: []u8) Request {
         orelse request.len;
     var info_iter = std.mem.splitScalar(u8, request[0..first_line_index], ' ');
     const method = try Method.init(info_iter.next().?);
-    const version = info_iter.next().?;
     const uri = info_iter.next().?;
+    const version = info_iter.next().?;
     return Request.init(method, version, uri);
 }
 
